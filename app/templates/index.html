@@ -7,6 +7,24 @@
   <input type="submit" value="Submit">
 </form>
 
-{% if trip_no %}
-  {{ trip_no }}
+{% if trip %}
+  {{ trip.trip_number }}
+  {{ trip.status }}
+  {{ trip.current_zone }}
+  {{ trip.description }}
+  {{ trip.driver }}
+  {{ trip.punit }}
+  {{ trip.trailer }}
+
+  {% for stop, bills in stops %}
+    <p>
+      {{ stop }}
+      <ul>
+      {% for bill in bills %}
+         <li>{{ bill.bill_number }}</li>
+      {% endfor %}
+      </ul>
+    </p>
+  {% endfor %}
+
 {% endif %}

@@ -31,10 +31,25 @@ def test():
 def index():
     form = forms.TripNumberForm()
     if form.validate_on_submit():
+        trip = models.Trip.query.filter_by(trip_number=form.trip_no.data).one()
+        freight_bills = trip.termplans.filter_by(
+            trip_number=trip.trip_number
+        )
+        
+        stops = defaultdict(list)
+        for fb in freight_bills:
+            if fb.tx_type == 'P':
+                group = 'P-{}-{}'.format(fb.tlorder.origin, fb.tlorder.pick_up_by)
+                stops[group].append(fb.tlorder)
+            elif fb.tx_type == 'D':
+                group = 'D-{}-{}'.format(fb.tlorder.destination, fb.tlorder.deliver_by)
+                stops[group].append(fb.tlorder)
+                
         return render_template(
             'index.html',
             form=form,
-            trip_no=form.trip_no.data
+            trip=trip,
+            stops=stops.items()
         )
     return render_template(
         'index.html',
