@@ -11,4 +11,4 @@ db.Model.metadata.reflect(
     only=['tlorder', 'tlorder_term_plan', 'trip']
 )
 
-from app import views, models
+from app import views, models, forms

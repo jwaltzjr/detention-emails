@@ -2,7 +2,7 @@ from collections import defaultdict
 from flask import render_template
 
 from app import app
-from . import models
+from . import models, forms
 
 @app.route('/test')
 def test():
