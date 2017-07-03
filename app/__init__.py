@@ -5,6 +5,10 @@ app = Flask(__name__)
 app.config.from_object('config')
 
 db = SQLAlchemy(app)
-db.Model.metadata.reflect(db.engine, schema='TMWIN', only=['tlorder'])
+db.Model.metadata.reflect(
+    db.engine,
+    schema='TMWIN',
+    only=['tlorder', 'tlorder_term_plan', 'trip']
+)
 
 from app import views, models
