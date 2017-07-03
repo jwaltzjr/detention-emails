@@ -1,5 +1,7 @@
 from app import app
+from . import models
 
 @app.route('/')
 def index():
-    return 'testing'
+    fb = models.Tlorder.query.first()
+    return fb.bill_number
