@@ -1,5 +1,5 @@
 from collections import defaultdict
-from flask import render_template
+from flask import render_template, redirect
 
 from app import app
 from . import models, forms
@@ -26,3 +26,18 @@ def test():
         freight_bills = freight_bills,
         stops = stops.items()
     )
+
+@app.route('/', methods=['GET','POST'])
+def index():
+    form = forms.TripNumberForm()
+    if form.validate_on_submit():
+        return render_template(
+            'index.html',
+            form=form,
+            trip_no=form.trip_no.data
+        )
+    return render_template(
+        'index.html',
+        form=form
+    )
+
