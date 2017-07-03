@@ -8,7 +8,7 @@ db = SQLAlchemy(app)
 db.Model.metadata.reflect(
     db.engine,
     schema='TMWIN',
-    only=['tlorder', 'tlorder_term_plan', 'trip']
+    only=['tlorder', 'tlorder_term_plan', 'trip', 'client']
 )
 
 from app import views, models, forms

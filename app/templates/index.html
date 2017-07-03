@@ -21,7 +21,7 @@
       {{ stop }}
       <ul>
       {% for bill in bills %}
-         <li>{{ bill.bill_number }}</li>
+         <li>{{ bill.bill_number }} - {{ bill.billto.name }}</li>
       {% endfor %}
       </ul>
     </p>
