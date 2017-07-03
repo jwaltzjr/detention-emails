@@ -1,4 +1,8 @@
+import os
 from krc.env import EnvVar
+
+WTF_CSRF_ENABLED = True
+SECRET_KEY = os.getenv('DETENTIONEMAIL-KEY')
 
 DATABASE_NAME = 'TEST'
 DATABASE_HOST = '10.10.81.19'
