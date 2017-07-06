@@ -4,6 +4,14 @@ class Client(db.Model):
     __tablename__ = 'TMWIN.client'
     __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
 
+class TraceNumber(db.Model):
+    __tablename__ = 'TMWIN.trace'
+    __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
+    detail_number = db.Column(db.Integer, db.ForeignKey('TMWIN.tlorder.detail_line_id'))
+
+    def __repr__(self):
+        return self.trace_number
+
 class TermPlan(db.Model):
     __tablename__ = 'TMWIN.tlorder_term_plan'
     __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
@@ -19,6 +27,7 @@ class Tlorder(db.Model):
     bill_to_code = db.Column(db.String(10), db.ForeignKey('TMWIN.client.client_id'))
     billto = db.relationship(Client, backref='orders')
     termplans = db.relationship(TermPlan, backref='tlorder', lazy='dynamic')
+    trace_numbers = db.relationship(TraceNumber, backref='tlorder', lazy='dynamic')
 
     def __repr__(self):
         return self.bill_number
