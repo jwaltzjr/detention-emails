@@ -1,40 +1,35 @@
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-  <ul>
-  {% for message in messages %}
-    <li>{{ message }}</li>
-  {% endfor %}
-  </ul>
-{% endif %}
-{% endwith %}
+{% extends 'base.html' %}
+{% block content %}
 
-<form action="" method="post" name="trip-number">
-  {{ form.hidden_tag() }}
-  {{ form.trip_no }}
-  {% for error in form.trip_no.errors %}
-    <p>{{ error }}</p>
-  {% endfor %}
-  <input type="submit" value="Submit">
-</form>
-
-{% if trip %}
-  {{ trip.trip_number }}
-  {{ trip.status }}
-  {{ trip.current_zone }}
-  {{ trip.description }}
-  {{ trip.driver }}
-  {{ trip.punit }}
-  {{ trip.trailer }}
-
-  {% for stop, bills in stops %}
-    <p>
-      {{ stop }} <a href="{{ url_for('send_email', stop=stop) }}">Send Email</a>
-      <ul>
-      {% for bill in bills %}
-         <li>{{ bill.bill_number }} - {{ bill.billto.name }}</li>
+    <form action="" method="post" name="trip-number">
+      {{ form.hidden_tag() }}
+      {{ form.trip_no }}
+      {% for error in form.trip_no.errors %}
+        <p>{{ error }}</p>
       {% endfor %}
-      </ul>
-    </p>
-  {% endfor %}
+      <input type="submit" value="Submit">
+    </form>
 
-{% endif %}
+    {% if trip %}
+      {{ trip.trip_number }}
+      {{ trip.status }}
+      {{ trip.current_zone }}
+      {{ trip.description }}
+      {{ trip.driver }}
+      {{ trip.punit }}
+      {{ trip.trailer }}
+
+      {% for stop, bills in stops %}
+        <p>
+          {{ stop }} <a href="{{ url_for('send_email', stop=stop) }}">Send Email</a>
+          <ul>
+          {% for bill in bills %}
+             <li>{{ bill.bill_number }} - {{ bill.billto.name }}</li>
+          {% endfor %}
+          </ul>
+        </p>
+      {% endfor %}
+
+    {% endif %}
+
+{% endblock %}
