@@ -4,6 +4,8 @@ from krc.env import EnvVar
 WTF_CSRF_ENABLED = True
 SECRET_KEY = os.getenv('DETENTIONEMAIL-KEY')
 
+SESSION_TYPE = 'filesystem'
+
 DATABASE_NAME = 'TEST'
 DATABASE_HOST = '10.10.81.19'
 DATABASE_PORT = '50000'

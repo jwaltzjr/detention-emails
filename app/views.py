@@ -76,12 +76,10 @@ def send_email():
         test_message = ''
         
         for fb in freight_bills:
-            bol_list = ','.join(fb.trace_numbers.filter_by(trace_type='B').all())
-            po_list = ','.join(fb.trace_numbers.filter_by(trace_type='P').all())
             fb_info = ("FB# {fb}\nBOL#(s) {bols}\nPO#(s) {pos}\n").format(
                 fb=fb.bill_number,
-                bols=bol_list,
-                pos=po_list
+                bols=fb.bol_numbers,
+                pos=fb.po_numbers
             )
             if stop_type == 'P':
                 email_message = email_message_base.format(

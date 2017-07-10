@@ -27,7 +27,8 @@ class Tlorder(db.Model):
     bill_to_code = db.Column(db.String(10), db.ForeignKey('TMWIN.client.client_id'))
     billto = db.relationship(Client, backref='orders')
     termplans = db.relationship(TermPlan, backref='tlorder', lazy='dynamic')
-    trace_numbers = db.relationship(TraceNumber, backref='tlorder', lazy='dynamic')
+    bol_numbers = db.relationship(TraceNumber, lazy='joined', primaryjoin='and_(TraceNumber.detail_number == Tlorder.detail_line_id, TraceNumber.trace_type == "B")')
+    po_numbers = db.relationship(TraceNumber, lazy='joined', primaryjoin='and_(TraceNumber.detail_number == Tlorder.detail_line_id, TraceNumber.trace_type == "P")')
 
     def __repr__(self):
         return self.bill_number

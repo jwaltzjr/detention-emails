@@ -18,7 +18,7 @@
 
   {% for stop, bills in stops %}
     <p>
-      {{ stop }} <a href="{{ url_for('send_email', stop=stops) }}">Send Email</a>
+      {{ stop }} <a href="{{ url_for('send_email', stop=stop) }}">Send Email</a>
       <ul>
       {% for bill in bills %}
          <li>{{ bill.bill_number }} - {{ bill.billto.name }}</li>
