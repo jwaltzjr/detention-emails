@@ -113,7 +113,7 @@ def send_email():
                     password = app.config['EMAIL_PASSWORD']
                 )
                 email_.send()
-                flash('Email for {} was sent successfully'.format(fb.bill_number))
+                flash('Email for {} was sent successfully.'.format(fb.bill_number))
         except Exception as e:
             flash('Some or all of the emails were not sent.')
             flash(e)
