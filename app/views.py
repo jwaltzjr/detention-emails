@@ -73,8 +73,7 @@ def send_email():
             "the driver is released, detention charges may apply on the following order.\n\nThank you and "
             "have a great day!\n\n{fb_info}"
         )
-        confirmation_message = ''
-
+                
         try:
             for fb in freight_bills:
                 fb_info = ("FB# {fb}\nBOL#(s) {bols}\nPO#(s) {pos}\n").format(
@@ -82,6 +81,12 @@ def send_email():
                     bols=','.join(trace.trace_number for trace in fb.bol_numbers),
                     pos=','.join(trace.trace_number for trace in fb.po_numbers)
                 )
+
+                emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
+                for e in fb.bill_to_emails:
+                    emails.append(e)
+                fb_info += '\nEmails:{}'.format(emails)
+                
                 if stop_type == 'P':
                     email_message = email_message_base.format(
                         location=fb.origname,
@@ -100,6 +105,7 @@ def send_email():
                     )
                 else:
                     email_message = 'An error occured.\n\n{}'.format(fb_info)
+                
                 email_ = KrcEmail(
                     ['jwaltzjr@krclogistics.com'],
                     subject='KRC Detention Notification for {}'.format(fb.bill_number),

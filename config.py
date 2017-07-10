@@ -23,3 +23,5 @@ SQLALCHEMY_DATABASE_URI = 'db2+ibm_db://{}:{}@{}:{}/{}'.format(
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 EMAIL_PASSWORD = EnvVar('EmailPassword').value
+
+DISPATCH_EMAIL = 'munsterdis2@krclogistics.com'
