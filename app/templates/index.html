@@ -3,31 +3,56 @@
 
     <form action="" method="post" name="trip-number">
       {{ form.hidden_tag() }}
-      {{ form.trip_no }}
+      {{ form.trip_no(class_='form-control') }}
       {% for error in form.trip_no.errors %}
         <p>{{ error }}</p>
       {% endfor %}
-      <input type="submit" value="Submit">
+      <input class="btn btn-default" type="submit" value="Find Trip">
     </form>
 
     {% if trip %}
-      {{ trip.trip_number }}
-      {{ trip.status }}
-      {{ trip.current_zone }}
-      {{ trip.description }}
-      {{ trip.driver }}
-      {{ trip.punit }}
-      {{ trip.trailer }}
+      <table class="table">
+        <tr>
+          <th>Trip</th>
+          <th>Status</th>
+          <th>Zone</th>
+          <th>Description</th>
+          <th>Driver</th>
+          <th>P. Unit</th>
+          <th>Trailer</th>
+        </tr>
+        <tr>
+          <td>{{ trip.trip_number }}</td>
+          <td>{{ trip.status }}</td>
+          <td>{{ trip.current_zone }}</td>
+          <td>{{ trip.description }}</td>
+          <td>{{ trip.driver }}</td>
+          <td>{{ trip.punit }}</td>
+          <td>{{ trip.trailer }}</td>
+        </tr>
+      </table>
 
       {% for stop, bills in stops %}
-        <p>
-          {{ stop }} <a href="{{ url_for('send_email', stop=stop) }}">Send Email</a>
-          <ul>
-          {% for bill in bills %}
-             <li>{{ bill.bill_number }} - {{ bill.billto.name }}</li>
-          {% endfor %}
-          </ul>
-        </p>
+        <div class="panel panel-default">
+          <div class="panel-heading">{{ stop }}</div>
+          <table class="table">
+            <tr>
+              <th>FB#</th>
+              <th>Customer</th>
+              <th>Shipper</th>
+              <th>Consignee</th>
+            <tr>
+            {% for bill in bills %}
+              <tr>
+                <td>{{ bill.bill_number }}</td>
+                <td>{{ bill.billto.name }}</td>
+                <td>{{ bill.origin }}</td>
+                <td>{{ bill.destination }}</td>
+              </tr>
+            {% endfor %}
+          </table>
+          <a class="btn btn-default" href="{{ url_for('send_email', stop=stop) }}">Send Detention Notification</a>
+        </div>
       {% endfor %}
 
     {% endif %}
