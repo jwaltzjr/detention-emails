@@ -1,3 +1,4 @@
+from sqlalchemy import text
 from app import db
 
 class Client(db.Model):
@@ -32,6 +33,15 @@ class Tlorder(db.Model):
 
     def __repr__(self):
         return self.bill_number
+
+    @property
+    def bill_to_emails(self):
+        return self.billto.detention_alt_email.split(',')
+
+    @property
+    def csr_email(self):
+        sql = text('SELECT TMWIN.KRC_GET_EMAIL(:csr) FROM TMWIN.DUAL WITH UR')
+        return db.engine.execute(sql, csr=self.sales_agent).fetchone()[0]
 
 class Trip(db.Model):
     __tablename__ = 'TMWIN.trip'
