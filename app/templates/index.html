@@ -35,9 +35,10 @@
       {% for stop, bills in stops %}
         <div class="panel panel-default">
           <div class="panel-heading">{{ stop }}</div>
-          <table class="table">
+          <table class="table fb-table">
             <tr>
               <th>FB#</th>
+              <th>CSR</th>
               <th>Customer</th>
               <th>Shipper</th>
               <th>Consignee</th>
@@ -45,6 +46,7 @@
             {% for bill in bills %}
               <tr>
                 <td>{{ bill.bill_number }}</td>
+                <td>{{ bill.sales_agent }}</td>
                 <td>{{ bill.billto.name }}</td>
                 <td>{{ bill.origin }}</td>
                 <td>{{ bill.destination }}</td>
