@@ -40,10 +40,10 @@ def index():
         stops = defaultdict(list)
         for fb in freight_bills:
             if fb.tx_type == 'P':
-                group = 'P-{}-{}'.format(fb.tlorder.origin, fb.tlorder.pick_up_by)
+                group = 'PICKUP at {} scheduled for {}'.format(fb.tlorder.origin, fb.tlorder.pick_up_by)
                 stops[group].append(fb.tlorder)
             elif fb.tx_type == 'D':
-                group = 'D-{}-{}'.format(fb.tlorder.destination, fb.tlorder.deliver_by)
+                group = 'DELIVERY to {} scheduled for {}'.format(fb.tlorder.destination, fb.tlorder.deliver_by)
                 stops[group].append(fb.tlorder)
 
         session['trip_stops'] = stops
