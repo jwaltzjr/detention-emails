@@ -107,12 +107,15 @@ def send_email():
                     password = app.config['EMAIL_PASSWORD']
                 )
                 email_.send()
-        except:
-            flash('Some or all of the emails were not sent properly.')
+                flash('Email for {} was sent successfully'.format(fb.bill_number))
+        except Exception as e:
+            flash('Some or all of the emails were not sent.')
+            flash(e)
             return redirect(url_for('index'))
         else:
             flash('All emails were sent successfully.')
             return redirect(url_for('index'))
     else:
-        return 'An error occured.'
+        flash('An error occured. Please do not use the back or refresh buttons.')
+        return redirect(url_for('index'))
 
