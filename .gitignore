@@ -113,3 +113,6 @@ GitHub.sublime-settings
 # IIS/FastCGI Deployment
 web.config
 ptvs_virtualenv_proxy.py
+
+# Flask Session Data
+flask_session/
