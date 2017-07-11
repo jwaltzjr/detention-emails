@@ -5,6 +5,9 @@ class Client(db.Model):
     __tablename__ = 'TMWIN.client'
     __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
 
+    def __repr__(self):
+        return self.client_id
+
 class TraceNumber(db.Model):
     __tablename__ = 'TMWIN.trace'
     __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
