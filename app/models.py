@@ -36,7 +36,10 @@ class Tlorder(db.Model):
 
     @property
     def bill_to_emails(self):
-        return self.billto.detention_alt_email.split(',')
+        if self.billto.detention_alt_email != '':
+            return self.billto.detention_alt_email.split(',')
+        else:
+            return []
 
     @property
     def csr_email(self):

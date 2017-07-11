@@ -82,44 +82,49 @@ def send_email():
                 
         try:
             for fb in freight_bills:
-                fb_info = ("FB# {fb}\nBOL#(s) {bols}\nPO#(s) {pos}\n").format(
-                    fb=fb.bill_number,
-                    bols=','.join(trace.trace_number for trace in fb.bol_numbers),
-                    pos=','.join(trace.trace_number for trace in fb.po_numbers)
-                )
+                if fb.bill_to_emails:
+                    fb_info = ("FB# {fb}\nBOL#(s) {bols}\nPO#(s) {pos}\n").format(
+                        fb=fb.bill_number,
+                        bols=','.join(trace.trace_number for trace in fb.bol_numbers),
+                        pos=','.join(trace.trace_number for trace in fb.po_numbers)
+                    )
 
-                emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
-                for e in fb.bill_to_emails:
-                    emails.append(e)
-                fb_info += '\nEmails:{}'.format(emails)
-                
-                if stop_type == 'P':
-                    email_message = email_message_base.format(
-                        location=fb.origname,
-                        city=fb.origcity,
-                        st=fb.origprov,
-                        appointment=fb.pick_up_by,
-                        fb_info=fb_info
+                    emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
+                    for e in fb.bill_to_emails:
+                        emails.append(e)
+                    fb_info += '\nEmails:{}'.format(emails)
+                    
+                    if stop_type == 'P':
+                        email_message = email_message_base.format(
+                            location=fb.origname,
+                            city=fb.origcity,
+                            st=fb.origprov,
+                            appointment=fb.pick_up_by,
+                            fb_info=fb_info
+                        )
+                    elif stop_type == 'D':
+                        email_message = email_message_base.format(
+                            location=fb.destname,
+                            city=fb.destcity,
+                            st=fb.destprov,
+                            appointment=fb.deliver_by,
+                            fb_info=fb_info
+                        )
+                    else:
+                        email_message = 'An error occured.\n\n{}'.format(fb_info)
+                    
+                    email_ = KrcEmail(
+                        ['jwaltzjr@krclogistics.com'],
+                        subject='KRC Detention Notification for {}'.format(fb.bill_number),
+                        message = email_message,
+                        password = app.config['EMAIL_PASSWORD']
                     )
-                elif stop_type == 'D':
-                    email_message = email_message_base.format(
-                        location=fb.destname,
-                        city=fb.destcity,
-                        st=fb.destprov,
-                        appointment=fb.deliver_by,
-                        fb_info=fb_info
-                    )
+                    email_.send()
+                    flash('Email for {} was sent successfully.'.format(fb.bill_number))
                 else:
-                    email_message = 'An error occured.\n\n{}'.format(fb_info)
-                
-                email_ = KrcEmail(
-                    ['jwaltzjr@krclogistics.com'],
-                    subject='KRC Detention Notification for {}'.format(fb.bill_number),
-                    message = email_message,
-                    password = app.config['EMAIL_PASSWORD']
-                )
-                email_.send()
-                flash('Email for {} was sent successfully.'.format(fb.bill_number))
+                    flash('Email for {} was not sent - no detention email for {}.'.format(
+                        fb.bill_number, fb.billto.name
+                    ))
         except Exception as e:
             flash('Some or all of the emails were not sent.')
             flash(e)
