@@ -69,7 +69,6 @@ def send_email():
                     emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
                     for e in fb.bill_to_emails:
                         emails.append(e)
-                    fb_info += '\nEmails:{}'.format(emails)
                     
                     if stop_type == 'P':
                         email_message = email_message_base.format(
@@ -91,7 +90,7 @@ def send_email():
                         email_message = 'An error occured.\n\n{}'.format(fb_info)
                     
                     email_ = KrcEmail(
-                        ['jwaltzjr@krclogistics.com'],
+                        emails,
                         subject='KRC Detention Notification for {}'.format(fb.bill_number),
                         message = email_message,
                         password = app.config['EMAIL_PASSWORD']
