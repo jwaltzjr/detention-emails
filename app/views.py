@@ -1,5 +1,6 @@
 from collections import OrderedDict
 from flask import render_template, redirect, request, session, flash, url_for
+from sqlalchemy.orm.exc import NoResultFound
 
 from krc.krcemail import KrcEmail
 from app import app
@@ -32,7 +33,12 @@ def test():
 def index():
     form = forms.TripNumberForm()
     if form.validate_on_submit():
-        trip = models.Trip.query.filter_by(trip_number=form.trip_no.data).one()
+        try:
+            trip = models.Trip.query.filter_by(trip_number=form.trip_no.data).one()
+        except NoResultFound:
+            flash('Trip {} was not found.'.format(form.trip_no.data))
+            return redirect(url_for('index'))
+
         terminal_plans = trip.termplans.filter_by(
             trip_number=trip.trip_number
         )
