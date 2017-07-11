@@ -3,7 +3,11 @@
 }
 
 .panel {
-  padding: 10px;
+  padding-bottom: 10px;
+}
+
+.panel table {
+  padding: 5px;
 }
 
 .fb-table td {
