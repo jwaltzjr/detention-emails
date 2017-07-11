@@ -6,29 +6,6 @@ from krc.krcemail import KrcEmail
 from app import app
 from . import models, forms
 
-@app.route('/test')
-def test():
-    trip = models.Trip.query.filter_by(trip_number=10321).one()
-    freight_bills = trip.termplans.filter_by(
-        trip_number=trip.trip_number
-    )
-
-    stops = OrderedDict()
-    for fb in freight_bills:
-        if fb.tx_type == 'P':
-            group = 'P-{}-{}'.format(fb.tlorder.origin, fb.tlorder.pick_up_by)
-            stops.setdefault(group, []).append(fb.tlorder)
-        elif fb.tx_type == 'D':
-            group = 'D-{}-{}'.format(fb.tlorder.destination, fb.tlorder.deliver_by)
-            stops.setdefault(group, []).append(fb.tlorder)
-            
-    return render_template(
-        'testing.html',
-        trip = trip,
-        freight_bills = freight_bills,
-        stops = stops.items()
-    )
-
 @app.route('/', methods=['GET','POST'])
 def index():
     form = forms.TripNumberForm()
