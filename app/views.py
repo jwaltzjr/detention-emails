@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import OrderedDict
 from flask import render_template, redirect, request, session, flash, url_for
 
 from krc.krcemail import KrcEmail
@@ -11,15 +11,15 @@ def test():
     freight_bills = trip.termplans.filter_by(
         trip_number=trip.trip_number
     )
-    
-    stops = defaultdict(list)
+
+    stops = OrderedDict()
     for fb in freight_bills:
         if fb.tx_type == 'P':
             group = 'P-{}-{}'.format(fb.tlorder.origin, fb.tlorder.pick_up_by)
-            stops[group].append(fb.tlorder)
+            stops.setdefault(group, []).append(fb.tlorder)
         elif fb.tx_type == 'D':
             group = 'D-{}-{}'.format(fb.tlorder.destination, fb.tlorder.deliver_by)
-            stops[group].append(fb.tlorder)
+            stops.setdefault(group, []).append(fb.tlorder)
             
     return render_template(
         'testing.html',
@@ -37,14 +37,14 @@ def index():
             trip_number=trip.trip_number
         )
         
-        stops = defaultdict(list)
+        stops = OrderedDict()
         for fb in freight_bills:
             if fb.tx_type == 'P':
                 group = 'PICKUP at {} scheduled for {}'.format(fb.tlorder.origin, fb.tlorder.pick_up_by)
-                stops[group].append(fb.tlorder)
+                stops.setdefault(group, []).append(fb.tlorder)
             elif fb.tx_type == 'D':
                 group = 'DELIVERY to {} scheduled for {}'.format(fb.tlorder.destination, fb.tlorder.deliver_by)
-                stops[group].append(fb.tlorder)
+                stops.setdefault(group, []).append(fb.tlorder)
 
         session['trip_stops'] = stops
                 
