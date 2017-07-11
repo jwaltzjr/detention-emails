@@ -33,12 +33,12 @@ def index():
     form = forms.TripNumberForm()
     if form.validate_on_submit():
         trip = models.Trip.query.filter_by(trip_number=form.trip_no.data).one()
-        freight_bills = trip.termplans.filter_by(
+        terminal_plans = trip.termplans.filter_by(
             trip_number=trip.trip_number
         )
         
         stops = OrderedDict()
-        for fb in freight_bills:
+        for fb in terminal_plans:
             if fb.tx_type == 'P':
                 group = 'PICKUP at {} scheduled for {}'.format(fb.tlorder.origin, fb.tlorder.pick_up_by)
                 stops.setdefault(group, []).append(fb.tlorder)
