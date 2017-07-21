@@ -46,16 +46,16 @@
               <th>FB#</th>
               <th>CSR</th>
               <th>Customer</th>
-              <th>Shipper</th>
-              <th>Consignee</th>
+              <th>Pickup DNES</th>
+              <th>Delivery DNES</th>
             <tr>
             {% for bill in bills %}
               <tr>
                 <td>{{ bill.bill_number }}</td>
                 <td>{{ bill.sales_agent }}</td>
                 <td>{{ bill.billto.name }}</td>
-                <td>{{ bill.origin }}</td>
-                <td>{{ bill.destination }}</td>
+                <td>{{ bill.pu_notify.DATE }}</td>
+                <td>{{ bill.del_notify.DATE }}</td>
               </tr>
             {% endfor %}
           </table>

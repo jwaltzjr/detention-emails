@@ -16,7 +16,8 @@ db.Model.metadata.reflect(
         'tlorder_term_plan',
         'trip',
         'client',
-        'trace'
+        'trace',
+        'custom_data'
     ]
 )
 

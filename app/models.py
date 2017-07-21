@@ -1,4 +1,5 @@
 from sqlalchemy import text
+from sqlalchemy.orm import backref
 from app import db
 
 class Client(db.Model):
@@ -25,6 +26,14 @@ class TermPlan(db.Model):
     def __repr__(self):
         return '<{} {} - {}>'.format(self.trip_number, self.tx_type, self.detail_line_id)
 
+class CustDef(db.Model):
+    __tablename__ = 'TMWIN.custom_data'
+    __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
+    src_table_key_int = db.Column(db.Integer, db.ForeignKey('TMWIN.tlorder.detail_line_id'))
+
+    def __repr__(self):
+        return '<{} {} - {} {}>'.format(self.custdef_id, self.src_table_key, self.DATA, self.DATE)
+    
 class Tlorder(db.Model):
     __tablename__ = 'TMWIN.tlorder'
     __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
@@ -33,6 +42,8 @@ class Tlorder(db.Model):
     termplans = db.relationship(TermPlan, backref='tlorder', lazy='dynamic')
     bol_numbers = db.relationship(TraceNumber, lazy='joined', primaryjoin='and_(TraceNumber.detail_number == Tlorder.detail_line_id, TraceNumber.trace_type == "B")')
     po_numbers = db.relationship(TraceNumber, lazy='joined', primaryjoin='and_(TraceNumber.detail_number == Tlorder.detail_line_id, TraceNumber.trace_type == "P")')
+    pu_notify = db.relationship(CustDef, uselist=False, lazy='joined', primaryjoin='and_(CustDef.src_table_key_int == Tlorder.detail_line_id, CustDef.custdef_id == "41")')
+    del_notify = db.relationship(CustDef, uselist=False, lazy='joined', primaryjoin='and_(CustDef.src_table_key_int == Tlorder.detail_line_id, CustDef.custdef_id == "42")')
 
     def __repr__(self):
         return self.bill_number
