@@ -128,3 +128,60 @@ def send_detention():
         flash('An error occured. Please do not use the back or refresh buttons.')
         return redirect(url_for('index'))
 
+
+@app.route('/send-late', methods=['GET','POST'])
+def send_late():
+    stops = session['trip_stops']
+    stop_id = request.args.get('stop')
+    if stops and stop_id:
+        stop_type = stop_id[0]
+        freight_bills = stops[stop_id]
+
+        FB_CHOICES = []
+        for fb in freight_bills:
+            FB_CHOICES.append((fb.bill_number, fb.bill_number))
+
+        form = forms.UndeliveredForm()
+        form.freight_bills.choices = FB_CHOICES
+
+        if form.validate_on_submit():
+            email_message_base = (
+                "Hello,\n\nThis message is being sent to notify you that {fb_no} will not be delivering"
+                "today. Please see routing for reschedule information.\n\nFB# {fb_no}\nCONSIGNEE: {consignee}\nAPPT END: {appt}\nREASON: {reason}\n"
+                "NOTES: {notes}\n\nThank you and have a great day!\n\n-KRC Dispatch"
+            )
+            
+            for fb in freight_bills:
+                if fb.bill_number in (form.freight_bills.data):
+                    emails = ['jwaltzjr@krclogistics.com']
+                    #emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
+                    #for e in app.config['ROUTING_EMAILS']:
+                    #    emails.append(e)
+
+                    try:
+                        email_message = email_message_base.format(
+                            fb_no = fb.bill_number.strip(),
+                            consignee = fb.destination,
+                            appt = fb.deliver_by_end,
+                            reason = '',
+                            notes = ''
+                        )
+                        email_ = KrcEmail(
+                            emails,
+                            subject='KRC Undelivered Notification for {}'.format(fb.bill_number),
+                            message = email_message,
+                            password = app.config['EMAIL_PASSWORD']
+                        )
+                        email_.send()
+                        flash('Email for {} was sent successfully.'.format(fb.bill_number))
+                    except Exception as e:
+                        flash('ERROR: Email for {} was not sent!.'.format(fb.bill_number))
+                        flash(e)
+            stops = session.pop('trip_stops', None)
+            return redirect(url_for('index'))
+        else:
+            return render_template(
+                'confirm_undelivered.html',
+                form=form
+            )
+

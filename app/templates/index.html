@@ -60,6 +60,7 @@
             {% endfor %}
           </table>
           <a class="btn btn-default" href="{{ url_for('send_detention', stop=stop) }}">Send Detention Notification</a>
+          <a class="btn btn-default" href="{{ url_for('send_late', stop=stop) }}">Send Late Delivery Notification</a>
         </div>
       {% endfor %}
 
