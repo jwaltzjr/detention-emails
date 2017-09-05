@@ -164,7 +164,7 @@ def send_late():
                             consignee = fb.destination,
                             appt = fb.deliver_by_end,
                             reason = dict(forms.UNDELIVERED_CHOICES).get(form.reason.data),
-                            notes = ''
+                            notes = form.notes.data
                         )
                         email_ = KrcEmail(
                             emails,
