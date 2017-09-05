@@ -163,7 +163,7 @@ def send_late():
                             fb_no = fb.bill_number.strip(),
                             consignee = fb.destination,
                             appt = fb.deliver_by_end,
-                            reason = '',
+                            reason = dict(forms.UNDELIVERED_CHOICES).get(form.reason.data),
                             notes = ''
                         )
                         email_ = KrcEmail(

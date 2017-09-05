@@ -10,6 +10,7 @@
     <form action="" method="post" name="undel-notify">
       {{ form.hidden_tag() }}
       {{ form.freight_bills }}
+      {{ form.reason }}
       {% for error in form.freight_bills.errors %}
         <p>{{ error }}</p>
       {% endfor %}
