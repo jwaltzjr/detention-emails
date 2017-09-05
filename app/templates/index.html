@@ -54,8 +54,8 @@
                 <td>{{ bill.bill_number }}</td>
                 <td>{{ bill.sales_agent }}</td>
                 <td>{{ bill.billto.name }}</td>
-                <td>{{ bill.pu_notify.DATE }}</td>
-                <td>{{ bill.del_notify.DATE }}</td>
+                <td>{{ bill.pu_notify|get_date }}</td>
+                <td>{{ bill.del_notify|get_date }}</td>
               </tr>
             {% endfor %}
           </table>

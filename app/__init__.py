@@ -21,4 +21,4 @@ db.Model.metadata.reflect(
     ]
 )
 
-from app import views, models, forms
+from app import views, models, forms, filters
