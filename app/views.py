@@ -42,8 +42,8 @@ def index():
         form=form
     )
 
-@app.route('/send-email', methods=['GET','POST'])
-def send_email():
+@app.route('/send-detention', methods=['GET','POST'])
+def send_detention():
     stops = session.pop('trip_stops', None)
     stop_id = request.args.get('stop')
     if stops and stop_id:
