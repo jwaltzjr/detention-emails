@@ -30,7 +30,15 @@ class CustDef(db.Model):
     __tablename__ = 'TMWIN.custom_data'
     __table_args__ = {'autoload': True, 'autoload_with': db.engine, 'extend_existing': True}
     src_table_key_int = db.Column(db.Integer, db.ForeignKey('TMWIN.tlorder.detail_line_id'))
+    row_timestamp = db.Column(db.TIMESTAMP, server_default=db.func.now(), server_onupdate=db.func.now())
 
+    def __init__(self, custom_id, dlid, data=None, date_=None):
+        self.custdef_id = custom_id
+        self.src_table_key_int = dlid
+        self.src_table_key = str(dlid)
+        self.DATA = data
+        self.DATE = date_
+        
     def __repr__(self):
         return '<{} {} - {} {}>'.format(self.custdef_id, self.src_table_key, self.DATA, self.DATE)
     

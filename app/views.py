@@ -3,7 +3,7 @@ from flask import render_template, redirect, request, session, flash, url_for
 from sqlalchemy.orm.exc import NoResultFound
 
 from krc.krcemail import KrcEmail
-from app import app
+from app import app, db
 from . import models, forms
 
 @app.route('/', methods=['GET','POST'])
@@ -56,6 +56,8 @@ def send_email():
             "the driver is released, detention charges may apply on the following order.\n\nThank you and "
             "have a great day!\n\n{fb_info}"
         )
+
+        current_timestamp = db.func.now()
                 
         try:
             for fb in freight_bills:
@@ -65,6 +67,7 @@ def send_email():
                         bols=','.join(trace.trace_number for trace in fb.bol_numbers),
                         pos=','.join(trace.trace_number for trace in fb.po_numbers)
                     )
+                    tlorder_fb = models.Tlorder.query.filter_by(detail_line_id=fb.detail_line_id).one()
 
                     emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
                     for e in fb.bill_to_emails:
@@ -78,6 +81,13 @@ def send_email():
                             appointment=fb.pick_up_by,
                             fb_info=fb_info
                         )
+                        if tlorder_fb.pu_notify:
+                            tlorder_fb.pu_notify.DATE = current_timestamp
+                            db.session.commit()
+                        else:
+                            new_cdf = models.CustDef(41, fb.detail_line_id, date_=current_timestamp)
+                            db.session.add(new_cdf)
+                            db.session.commit()
                     elif stop_type == 'D':
                         email_message = email_message_base.format(
                             location=fb.destname,
@@ -86,9 +96,15 @@ def send_email():
                             appointment=fb.deliver_by,
                             fb_info=fb_info
                         )
+                        if tlorder_fb.del_notify:
+                            tlorder_fb.del_notify.DATE = current_timestamp
+                            db.session.commit()
+                        else:
+                            new_cdf = models.CustDef(42, fb.detail_line_id, date_=current_timestamp)
+                            db.session.add(new_cdf)
+                            db.session.commit()
                     else:
                         email_message = 'An error occured.\n\n{}'.format(fb_info)
-                    
                     email_ = KrcEmail(
                         emails,
                         subject='KRC Detention Notification for {}'.format(fb.bill_number),
