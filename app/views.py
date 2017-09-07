@@ -139,16 +139,17 @@ def send_late():
 
         FB_CHOICES = []
         for fb in freight_bills:
-            FB_CHOICES.append((fb.bill_number, fb.bill_number))
+            FB_CHOICES.append((fb.bill_number, '{} - {}'.format(fb.bill_number, fb.callname)))
 
         form = forms.UndeliveredForm()
         form.freight_bills.choices = FB_CHOICES
 
         if form.validate_on_submit():
             email_message_base = (
-                "Hello,\n\nThis message is being sent to notify you that {fb_no} will not be delivering"
-                "today. Please see routing for reschedule information.\n\nFB# {fb_no}\nCONSIGNEE: {consignee}\nAPPT END: {appt}\nREASON: {reason}\n"
-                "NOTES: {notes}\n\nThank you and have a great day!\n\n-KRC Dispatch"
+                "Hello,\n\nThis message is being sent to notify you that {fb_no} will not be delivering "
+                "today. Please see routing for reschedule information.\n\nFB# {fb_no}\nCONSIGNEE: "
+                "{consignee}\nAPPT END: {appt}\nREASON: {reason}\nNOTES: {notes}\n\nThank you and have a "
+                "great day!\n\n-KRC Dispatch"
             )
             
             for fb in freight_bills:

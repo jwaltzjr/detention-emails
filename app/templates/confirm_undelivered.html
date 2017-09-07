@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <p>Welcome to the KRC Detention Notification app. To get started, enter a trip number!</p>
+    <p>Confirm Undelivered Notification</p>
     <ul>
       <li>Please do not use the back or refresh buttons while using this app. This can lead to unexpected behavior.</li>
       <li>Sometimes sending the notifications can take a minute or more. Please do not refresh or close the page while it is still loading.</li>
@@ -9,8 +9,12 @@
 
     <form action="" method="post" name="undel-notify">
       {{ form.hidden_tag() }}
-      {{ form.freight_bills }}
-      {{ form.reason }}
+      {{ form.freight_bills.label }}
+      {{ form.freight_bills(class_='list-unstyled') }}
+      {{ form.reason.label}}
+      {{ form.reason(class_='form-control') }}
+      {{ form.notes.label}}
+      {{ form.notes(class_='form-control') }}
       {% for error in form.freight_bills.errors %}
         <p>{{ error }}</p>
       {% endfor %}

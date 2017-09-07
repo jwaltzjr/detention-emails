@@ -2,17 +2,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A webapp built for KRC Logistics for sending detention notifications.">
+    <meta name="description" content="A webapp built for KRC Logistics for sending dispatch notifications.">
     <meta name="author" content="Jeff Waltz, Jr.">
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
-    <title>KRC Detention Notification App</title>
+    <title>KRC Dispatch Notifications App</title>
   </head>
   <body>
     <div class="container">
 
       <div class="navbar navbar-default">
-        <a class="navbar-brand" href="{{ url_for('index') }}">KRC DETENTION NOTIFICATION APP</a>
+        <a class="navbar-brand" href="{{ url_for('index') }}">KRC DISPATCH NOTIFICATIONS</a>
       </div>
 
       {% with messages = get_flashed_messages() %}

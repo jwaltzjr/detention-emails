@@ -18,21 +18,21 @@ UNDELIVERED_CHOICES = [
 
 class TripNumberForm(FlaskForm):
     trip_no = IntegerField(
-        'trip_no',
+        'Trip Number',
         validators=[DataRequired()]
     )
 
 class UndeliveredForm(FlaskForm):
     freight_bills = SelectMultipleField(
-        'freight_bills',
+        'Freight Bills',
         choices=[],
         option_widget=widgets.CheckboxInput(),
         widget=widgets.ListWidget(prefix_label=False)
     )
     reason = SelectField(
-        'reason',
+        'Reason',
         choices=UNDELIVERED_CHOICES
     )
     notes = TextAreaField(
-        'notes'
+        'Notes'
     )

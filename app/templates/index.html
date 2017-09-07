@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <p>Welcome to the KRC Detention Notification app. To get started, enter a trip number!</p>
+    <p>Welcome to the KRC Dispatch Notifications app. To get started, enter a trip number!</p>
     <ul>
       <li>Please do not use the back or refresh buttons while using this app. This can lead to unexpected behavior.</li>
       <li>Sometimes sending the notifications can take a minute or more. Please do not refresh or close the page while it is still loading.</li>
@@ -60,7 +60,7 @@
             {% endfor %}
           </table>
           <a class="btn btn-default" href="{{ url_for('send_detention', stop=stop) }}">Send Detention Notification</a>
-          <a class="btn btn-default" href="{{ url_for('send_late', stop=stop) }}">Send Late Delivery Notification</a>
+          <a class="btn btn-default" href="{{ url_for('send_late', stop=stop) }}">Send Undelivered Notification</a>
         </div>
       {% endfor %}
 
