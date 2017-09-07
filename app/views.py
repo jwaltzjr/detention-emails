@@ -154,10 +154,9 @@ def send_late():
             
             for fb in freight_bills:
                 if fb.bill_number in (form.freight_bills.data):
-                    emails = ['jwaltzjr@krclogistics.com']
-                    #emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
-                    #for e in app.config['ROUTING_EMAILS']:
-                    #    emails.append(e)
+                    emails = [app.config['DISPATCH_EMAIL'], fb.csr_email]
+                    for e in app.config['ROUTING_EMAILS']:
+                        emails.append(e)
 
                     try:
                         email_message = email_message_base.format(
