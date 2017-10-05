@@ -26,8 +26,7 @@ EMAIL_PASSWORD = EnvVar('EmailPassword').value
 
 DISPATCH_EMAIL = 'munsterdis2@krclogistics.com'
 ROUTING_EMAILS = [
-    'dpeach@krclogistics.com',
+    'traffic@krclogistics.com',
     'appointments@krclogistics.com',
-    'munsterdis1@krclogistics.com',
-    'lkriechbaum@krclogistics.com'
+    'munsterdis1@krclogistics.com'
 ]
