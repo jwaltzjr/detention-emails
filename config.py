@@ -24,9 +24,9 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 EMAIL_PASSWORD = EnvVar('EmailPassword').value
 
-DISPATCH_EMAIL = 'munsterdis2@krclogistics.com'
+DISPATCH_EMAIL = 'munsterdis1@krclogistics.com'
 ROUTING_EMAILS = [
     'traffic@krclogistics.com',
-    'appointments@krclogistics.com',
-    'munsterdis1@krclogistics.com'
+    'routing@krclogistics.com',
+    'dispatch@krclogistics.com'
 ]
