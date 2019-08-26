@@ -1,3 +1,4 @@
+import re
 from sqlalchemy import text
 from sqlalchemy.orm import backref
 from app import db
@@ -59,7 +60,7 @@ class Tlorder(db.Model):
     @property
     def bill_to_emails(self):
         if self.billto.detention_alt_email != '':
-            return self.billto.detention_alt_email.split(',')
+            return re.split(',|;', self.billto.detention_alt_email)
         else:
             return []
 
