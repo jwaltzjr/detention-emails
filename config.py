@@ -28,5 +28,6 @@ DISPATCH_EMAIL = 'munsterdis1@krclogistics.com'
 ROUTING_EMAILS = [
     'traffic@krclogistics.com',
     'routing@krclogistics.com',
-    'dispatch@krclogistics.com'
+    'dispatch@krclogistics.com',
+    'tkatsahnias@krclogistics.com'
 ]
